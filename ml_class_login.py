@@ -13,7 +13,7 @@ from BeautifulSoup import BeautifulSoup
 
 def get_login (username, password):
     
-    ''' log in to what.cd and get a cookie
+    ''' log in to site and get a cookie
         opener is returned and should be used to open other pages inside '''
     
     print 'logging in as %s' % username
@@ -22,15 +22,14 @@ def get_login (username, password):
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj)) 
     login_data = urllib.urlencode({'email_address': username,
                                    'password' : password })
-    opener.addheaders.append(('User-agent', 'Mozilla/4.0'))
     page= 'https://www.ml-class.org/course/auth/login'
 
-    #Try to log in and get the result html
     opener.open(page, login_data)
     check=opener.open('http://www.ml-class.org/course/class/index')
-    print 'We are in.'
     return opener
 
+'''finds the ids via regex, which isn't ideal, but works pretty well
+    in this particular scenario ''' 
 def get_vid_ids(page):
     x=re.findall('file: \'[0-9][0-9].*?\'',page)
     y=[""]*len(x)
